@@ -14,8 +14,10 @@ TBD
 
 ## Runtime Configuration
 
+Using the `psql` client or another client you can retrieve the runtime configuration via several SQL statements:
+
 ```
-SHOW ALL;
+psql> SHOW ALL;
 ```
 
 For more information see the [PostgreSQL `SHOW` manual page](https://www.postgresql.org/docs/15/sql-show.html).
@@ -23,7 +25,7 @@ For more information see the [PostgreSQL `SHOW` manual page](https://www.postgre
 or
 
 ```
-SELECT name,setting FROM pg_settings;
+psql> SELECT name,setting FROM pg_settings;
 ```
 
 For more information see the [PostgreSQL `pg_settings` manual page](https://www.postgresql.org/docs/15/view-pg-settings.html).
@@ -34,7 +36,7 @@ The `pg_settings` view contains additional attributes that are not required. The
 \d pg_settings;
               View "pg_catalog.pg_settings"
     Column      |  Type   | Collation | Nullable | Default
------------------+---------+-----------+----------+---------
+----------------+---------+-----------+----------+---------
 name            | text    |           |          |
 setting         | text    |           |          |
 unit            | text    |           |          |
@@ -54,11 +56,20 @@ sourceline      | integer |           |          |
 pending_restart | boolean |           |          |
 ```
 
+### Quick Capture
+
+```
+URL="postgres://${DBA_USER}:${DBA_PASSWD}@${HOST}:${PORT}/${DB_SCHEMA}"
+psql $URL -c "SELECT name,setting FROM pg_settings" > postgres.settings.txt
+```
+
+
 ### Example Output
 
 Depending on the version, the output can contain 300+ different configuration settings.
 
 ```
+psql> SHOW ALL;
 name                                   |                     setting                     |                                                               description
 ---------------------------------------+-------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------
 allow_in_place_tablespaces             | off                                             | Allows tablespaces directly inside pg_tblspc, for testing.
